@@ -22,8 +22,7 @@ puzzle_input = io.StringIO('\n'.join([
   'K,Y,L,B,Q,Q,P,M,D,F,C,K,E,A,B']))
 
 class PuzzleTest(TestCase):
-  def setUp(self):
-    self.puzzle = puzzle.read_puzzle(puzzle_input)
+  puzzle = puzzle.read_puzzle(puzzle_input)
 
   def test_read_puzzle(self):
     words, grid = self.puzzle
@@ -33,3 +32,11 @@ class PuzzleTest(TestCase):
     self.assertEqual(grid.size, 15)
     self.assertEqual(grid[0, 0], 'U')
     self.assertEqual(grid[14, 14], 'B')
+
+  def test_find_all(self):
+    _, grid = self.puzzle
+    *_, last = puzzle.find_all(grid, 'B')
+    self.assertEqual(last, (14, 14))
+
+  def test_directions(self):
+    self.assertEqual(set(puzzle.directions()), {(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)})
