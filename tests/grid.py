@@ -8,6 +8,10 @@ class GridTest(TestCase):
   characters = 'UMKHU' + 'LKINV' + 'JOCWE' + 'LLSHK' + 'ZZWZC'
   grid = Grid(array('I', map(ord, characters)))
 
+  def test_init(self):
+    with self.assertRaises(ValueError):
+      Grid(array('I', map(ord, 'ABCDEF')))
+
   def test_index(self):
     self.assertEqual(self.grid[(0, 0)], 'U')
     self.assertEqual(self.grid[(4, 0)], 'U')

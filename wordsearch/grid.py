@@ -28,6 +28,12 @@ class Grid(Mapping):
   characters: array
 
   def __init__(self, characters: array) -> None:
+    length = len(characters)
+    size = int(sqrt(length))
+
+    if size * size != length:
+      raise ValueError("Character array length for a Grid must be a perfect square (rows = columns)")
+
     self.characters = characters
 
   def __getitem__(self, coordinates: Coordinates) -> str:
