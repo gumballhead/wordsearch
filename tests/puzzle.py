@@ -44,12 +44,27 @@ class PuzzleTest(TestCase):
   def test_find_word(self):
     _, grid = self.puzzle
 
+    # As the Puzzle Solver, I want to search vertically, so that I can find words on the Y axis
     self.assertEqual(list(puzzle.find_word(grid, 'BONES')), [(0, 6), (0, 7), (0, 8), (0, 9), (0, 10)])
+
+    # As the Puzzle Solver, I want to search vertically backwards, so that I can find words on the Y axis in reverse
     self.assertEqual(list(puzzle.find_word(grid, 'KHAN')), [(5, 9), (5, 8), (5, 7), (5, 6)])
+
+    # As the Puzzle Solver, I want to search horizontally backwards, so that I can find words on the X axis in reverse
     self.assertEqual(list(puzzle.find_word(grid, 'KIRK')), [(4, 7), (3, 7), (2, 7), (1, 7)])
+
+    # As the Puzzle Solver, I want to search horizontally, so that I can find words on the X axis
     self.assertEqual(list(puzzle.find_word(grid, 'SCOTTY')), [(0, 5), (1, 5), (2, 5), (3, 5), (4, 5), (5, 5)])
+
+    # As the Puzzle Solver, I want to search diagonally descending, so that I can find words that descend on the X axis
     self.assertEqual(list(puzzle.find_word(grid, 'SPOCK')), [(2, 1), (3, 2), (4, 3), (5, 4), (6, 5)])
+
+    # As the Puzzle Solver, I want to search diagonally descending backwards, so that I can find words that
+    # descend on the X axis in reverse
     self.assertEqual(list(puzzle.find_word(grid, 'SULU')), [(3, 3), (2, 2), (1, 1), (0, 0)])
+
+    # As the Puzzle Solver, I want to seach diagonally ascending backwards, so that I can find words that
+    # ascend on the X axis in reverse
     self.assertEqual(list(puzzle.find_word(grid, 'UHURA')), [(4, 0), (3, 1), (2, 2), (1, 3), (0, 4)])
 
     with self.assertRaises(ValueError):
