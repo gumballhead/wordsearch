@@ -26,16 +26,16 @@ def directions() -> Iterator[Tuple[int, int]]:
   return filter(lambda it: it != (0, 0), product((-1, 0, 1), (-1, 0, 1)))
 
 def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
-  """Finds a word by searching any direction in a grid, returning the location of each letter"""
+  """Finds a word by searching in all direction of a grid, returning the location of each letter"""
   first_letter = word[0]
   length = len(word)
 
   for x, y in find_all(grid, first_letter):
     # Generate search vectors in all possible directions starting from the first letter, and limit to the word length
-    search_vectors = (islice(grid.vector((x, y), h, v), length) for (h, v) in directions()
+    search_vectors = (islice(grid.vector((x, y), h, v), length) for h, v in directions()
 
       # Filter out search vectors that terminate before the word ends (borders approaching an edge)
-      if (x + h * (length - 1), y + v * (length -1))  in grid)
+      if (x + h * (length - 1), y + v * (length - 1)) in grid)
 
     for search_vector in search_vectors:
       # Save a reference the points iterator to return as a result if it matches the word

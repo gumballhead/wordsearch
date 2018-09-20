@@ -32,14 +32,14 @@ class Grid(Mapping):
     size = int(sqrt(length))
 
     if size * size != length:
-      raise ValueError("Character array length for a Grid must be a perfect square (rows = columns)")
+      raise ValueError('Character array length for a Grid must be a perfect square (rows = columns)')
 
     self.characters = characters
 
   def __getitem__(self, coordinates: Coordinates) -> str:
     """Allows indexing of the character array by grid coordinates"""
     if coordinates not in self:
-      raise KeyError(f'Coordinate pair {coordinates} outside of grid extent')
+      raise KeyError(f"Coordinate pair {coordinates} outside of grid extent")
 
     i = self.address(coordinates)
     return chr(self.characters[i])
