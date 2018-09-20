@@ -1,5 +1,5 @@
 from array import array
-from itertools import chain, product
+from itertools import chain, product, islice, tee, zip_longest
 from typing import Tuple, List, Iterator, TextIO
 
 from wordsearch.grid import Coordinates, Grid
@@ -24,3 +24,20 @@ def find_all(grid: Grid, letter: str) -> Iterator[Coordinates]:
 def directions() -> Iterator[Tuple[int, int]]:
   """Generate all possible search directions"""
   return filter(lambda it: it != (0, 0), product((-1, 0, 1), (-1, 0, 1)))
+
+def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
+  """Finds a word by searching any direction in a grid, returning the location of each letter"""
+  first_letter = word[0]
+  length = len(word)
+
+  for position in find_all(grid, first_letter):
+    search_vectors = (islice(grid.vector(position, *direction), length) for direction in directions())
+
+    for search_vector in search_vectors:
+      points, result = tee(search_vector)
+      characters = map(lambda it: grid[it], points)
+
+      if all(a == b for a, b in zip_longest(word, characters)):
+        return result
+
+  raise ValueError(f"{word} not found in puzzle!")
