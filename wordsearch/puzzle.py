@@ -1,5 +1,5 @@
 from array import array
-from itertools import chain, product, islice, tee, zip_longest
+from itertools import chain, product, islice, tee
 from typing import Tuple, List, Iterator, TextIO
 
 from wordsearch.grid import Coordinates, Grid
@@ -45,7 +45,7 @@ def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
       characters = map(lambda it: grid[it], points)
 
       # Compare each character of the word to the characters in the search vector, returning early if no match found
-      if all(a == b for a, b in zip_longest(word, characters)):
+      if all(a == b for a, b in zip(word, characters)):
         return result
 
   raise ValueError(f"{word} not found in puzzle!")
