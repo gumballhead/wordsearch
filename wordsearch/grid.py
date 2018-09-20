@@ -1,6 +1,6 @@
 from array import array
 from math import sqrt
-from itertools import takewhile
+from itertools import takewhile, product
 from collections.abc import Mapping
 from typing import Iterator, Tuple, cast
 
@@ -15,6 +15,17 @@ def vector(horizontal: int, vertical: int, start=(0, 0)) -> Vector:
     yield (x, y)
     x += horizontal
     y += vertical
+
+def terminal(horizontal: int, vertical: int, start: Coordinates, distance: int) -> Coordinates:
+  """Calculate the terminal position of a vector given a starting position and length"""
+  x, y = start
+  distance -= 1
+
+  return (x + horizontal * distance, y + vertical * distance)
+
+def directions() -> Iterator[Tuple[int, int]]:
+  """Create an iterator over the product of all horizontal and vertical directions"""
+  return filter(lambda it: it != (0, 0), product((-1, 0, 1), (-1, 0, 1)))
 
 class Grid(Mapping):
   """
@@ -59,12 +70,11 @@ class Grid(Mapping):
 
     x, y = key
 
-    if not (isinstance(x, int) and isinstance(y, int)):
+    if isinstance(x, int) and isinstance(y, int):
+      size = self.size
+      return (0 <= x < size) and (0 <= y < size)
+    else:
       return False
-
-    size = self.size
-
-    return (0 <= x < size) and (0 <= y < size)
 
   @property
   def size(self) -> int:

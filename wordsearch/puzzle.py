@@ -2,7 +2,7 @@ from array import array
 from itertools import chain, product, islice, tee
 from typing import Tuple, List, Iterator, TextIO
 
-from wordsearch.grid import Coordinates, Vector, Grid
+from wordsearch.grid import Coordinates, Vector, Grid, terminal, directions
 
 def parse_line(line: str) -> List[str]:
   """Strip a line of its newline ending character and tokenize on comma separators"""
@@ -23,22 +23,14 @@ def find_all(grid: Grid, letter: str) -> Iterator[Coordinates]:
 
 def search_vectors(grid: Grid, position: Coordinates, distance: int) -> Iterator[Vector]:
   """Generate all candidate search vectors from a starting position on a grid"""
-  (x, y) = position
+  for horizontal, vertical in directions():
+    end_position = terminal(horizontal, vertical, position, distance)
 
-  # Generate all possible search directions
-  directions = filter(lambda it: it != (0, 0), product((-1, 0, 1), (-1, 0, 1)))
-
-  for horizontal, vertical in directions:
-    # Calculate the terminal position of the vector from the full distance
-    end_position = (x + horizontal * (distance - 1), y + vertical * (distance - 1))
-
-    # Filter out search vectors that would be too short to match the word (borders approaching an edge)
+    # Filter out vectors whose length would be too short to match the word (borders approaching an edge)
     if end_position in grid:
+      vector = grid.vector(position, horizontal, vertical)
 
-      # Create the vector from the starting position and direction
-      vector = grid.vector((x, y), horizontal, vertical)
-
-      # Limit the vector distance to the length of the word
+      # Limit the search distance to the length of the word
       yield islice(vector, distance)
 
 def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
@@ -51,7 +43,7 @@ def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
 
   for position in find_all(grid, first_letter):
     for search_vector in search_vectors(grid, position, length):
-      # Save a reference to the search vector to return if it matches the word
+      # Save a copy of the search vector to return if it matches the word
       points, result = tee(search_vector)
 
       # Translate the point vector to the character at each coordinate location
