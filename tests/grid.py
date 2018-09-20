@@ -5,25 +5,20 @@ from itertools import islice
 from wordsearch.grid import Grid
 
 class GridTest(TestCase):
-  characters = 'UMKHU' + 'LKINV' + 'JOCWE' + 'LLSHK' + 'ZZWZC'
+  characters = 'ABCDE' + 'FGHIJ' + 'KLMNO' + 'PQRST' + 'UVWXY'
   grid = Grid(array('I', map(ord, characters)))
 
   def test_init(self):
     with self.assertRaises(ValueError):
-      Grid(array('I', map(ord, 'ABCDEF')))
+      Grid(array('I', map(ord, 'ABCDE')))
 
   def test_index(self):
-    self.assertEqual(self.grid[0, 0], 'U')
-    self.assertEqual(self.grid[4, 0], 'U')
-
-    self.assertEqual(self.grid[0, 1], 'L')
-    self.assertEqual(self.grid[4, 1], 'V')
-
-    self.assertEqual(self.grid[2, 2], 'C')
-    self.assertEqual(self.grid[3, 3], 'H')
-
-    self.assertEqual(self.grid[0, 4], 'Z')
-    self.assertEqual(self.grid[4, 4], 'C')
+    self.assertEqual(self.grid[0, 0], 'A')
+    self.assertEqual(self.grid[3, 2], 'N')
+    self.assertEqual(self.grid[3, 0], 'D')
+    self.assertEqual(self.grid[2, 3], 'R')
+    self.assertEqual(self.grid[4, 0], 'E')
+    self.assertEqual(self.grid[2, 4], 'W')
 
     with self.assertRaises(KeyError):
       self.grid[5, 5]
@@ -32,17 +27,22 @@ class GridTest(TestCase):
     self.assertEqual(''.join(self.grid.values()), self.characters)
 
   def test_contains(self):
+    # Passing cases. Coordinates in grid
     self.assertTrue((0, 0) in self.grid)
     self.assertTrue((2, 2) in self.grid)
     self.assertTrue((4, 4) in self.grid)
 
+    # Failing cases. Coordinates outside grid
     self.assertFalse((5, 4) in self.grid)
     self.assertFalse((5, 5) in self.grid)
     self.assertFalse((-1, -1) in self.grid)
 
-    self.assertFalse('foo' in self.grid)
+    # Failing cases. Non-coordinate objects not in grid
+    self.assertFalse('wat' in self.grid)
+    self.assertFalse(1 in self.grid)
     self.assertFalse(None in self.grid)
     self.assertFalse(('foo', 'bar') in self.grid)
+    self.assertFalse((1, 'wat') in self.grid)
 
   def test_len(self):
     self.assertEqual(len(self.grid), 25)
@@ -58,11 +58,11 @@ class GridTest(TestCase):
     self.assertEqual(self.grid.address((4, 4)), 24)
 
   def test_coordinates(self):
-    self.assertEqual(self.grid.coordinates(0), (0, 0))
-    self.assertEqual(self.grid.coordinates(6), (1, 1))
+    self.assertEqual(self.grid.coordinates(4), (4, 0))
+    self.assertEqual(self.grid.coordinates(8), (3, 1))
     self.assertEqual(self.grid.coordinates(12), (2, 2))
-    self.assertEqual(self.grid.coordinates(18), (3, 3))
-    self.assertEqual(self.grid.coordinates(24), (4, 4))
+    self.assertEqual(self.grid.coordinates(16), (1, 3))
+    self.assertEqual(self.grid.coordinates(20), (0, 4))
 
   def test_vector(self):
     # Diagonal down and right
