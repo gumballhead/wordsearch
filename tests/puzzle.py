@@ -28,7 +28,7 @@ class PuzzleTest(TestCase):
     words, grid = self.puzzle
 
     self.assertEqual(words, ['BONES', 'KHAN', 'KIRK', 'SCOTTY', 'SPOCK', 'SULU', 'UHURA'])
-    self.assertEqual(len(grid.characters), 225)
+    self.assertEqual(len(grid), 225)
     self.assertEqual(grid.size, 15)
     self.assertEqual(grid[0, 0], 'U')
     self.assertEqual(grid[14, 14], 'B')
