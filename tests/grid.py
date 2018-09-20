@@ -42,7 +42,7 @@ class GridTest(TestCase):
     self.assertFalse(1 in self.grid)
     self.assertFalse(None in self.grid)
     self.assertFalse(('foo', 'bar') in self.grid)
-    self.assertFalse((1, 'wat') in self.grid)
+    self.assertFalse((1, 'too') in self.grid)
 
   def test_len(self):
     self.assertEqual(len(self.grid), 25)

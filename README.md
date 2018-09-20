@@ -6,6 +6,9 @@ Wordsearch Puzzle Solver
 # Solve a wordsearch puzzle, where puzzle is a file containing a wordsearch puzzle
 bin/wordsearch < puzzle
 
-# Run all tests
+# Run all unit tests
 bin/test
+
+# Run an end-to-end test with data returned from a wordsearch puzzle archive api
+bin/generative_test
 ```
