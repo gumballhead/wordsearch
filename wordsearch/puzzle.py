@@ -31,14 +31,20 @@ def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
   length = len(word)
 
   for x, y in find_all(grid, first_letter):
+    # Generate search vectors in all possible directions starting from the first letter, and limit to the word length
     search_vectors = (islice(grid.vector((x, y), h, v), length) for (h, v) in directions()
 
+      # Filter out search vectors that terminate before the word ends (borders approaching an edge)
       if (x + h * (length - 1), y + v * (length -1))  in grid)
 
     for search_vector in search_vectors:
+      # Save a reference the points iterator to return as a result if it matches the word
       points, result = tee(search_vector)
+
+      # Translate the point vector to the character at each coordinate location
       characters = map(lambda it: grid[it], points)
 
+      # Compare each character of the word to the characters in the search vector, returning early if no match found
       if all(a == b for a, b in zip_longest(word, characters)):
         return result
 
