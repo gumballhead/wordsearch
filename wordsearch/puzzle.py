@@ -30,8 +30,10 @@ def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
   first_letter = word[0]
   length = len(word)
 
-  for position in find_all(grid, first_letter):
-    search_vectors = (islice(grid.vector(position, *direction), length) for direction in directions())
+  for x, y in find_all(grid, first_letter):
+    search_vectors = (islice(grid.vector((x, y), h, v), length) for (h, v) in directions()
+
+      if (x + h * (length - 1), y + v * (length -1))  in grid)
 
     for search_vector in search_vectors:
       points, result = tee(search_vector)
