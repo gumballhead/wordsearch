@@ -2,7 +2,7 @@ from unittest import TestCase
 from array import array
 from itertools import islice
 
-from wordsearch.grid import Coordinates, Grid
+from wordsearch.grid import Grid
 
 class GridTest(TestCase):
   characters = 'UMKHU' + 'LKINV' + 'JOCWE' + 'LLSHK' + 'ZZWZC'
