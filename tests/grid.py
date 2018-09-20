@@ -13,20 +13,20 @@ class GridTest(TestCase):
       Grid(array('I', map(ord, 'ABCDEF')))
 
   def test_index(self):
-    self.assertEqual(self.grid[(0, 0)], 'U')
-    self.assertEqual(self.grid[(4, 0)], 'U')
+    self.assertEqual(self.grid[0, 0], 'U')
+    self.assertEqual(self.grid[4, 0], 'U')
 
-    self.assertEqual(self.grid[(0, 1)], 'L')
-    self.assertEqual(self.grid[(4, 1)], 'V')
+    self.assertEqual(self.grid[0, 1], 'L')
+    self.assertEqual(self.grid[4, 1], 'V')
 
-    self.assertEqual(self.grid[(2, 2)], 'C')
-    self.assertEqual(self.grid[(3, 3)], 'H')
+    self.assertEqual(self.grid[2, 2], 'C')
+    self.assertEqual(self.grid[3, 3], 'H')
 
-    self.assertEqual(self.grid[(0, 4)], 'Z')
-    self.assertEqual(self.grid[(4, 4)], 'C')
+    self.assertEqual(self.grid[0, 4], 'Z')
+    self.assertEqual(self.grid[4, 4], 'C')
 
     with self.assertRaises(KeyError):
-      self.grid[(5, 5)]
+      self.grid[5, 5]
 
   def test_iterator(self):
     self.assertEqual(''.join(self.grid.values()), self.characters)
