@@ -54,3 +54,7 @@ class PuzzleTest(TestCase):
 
     with self.assertRaises(ValueError):
       puzzle.find_word(grid, 'CHEKOV')
+
+    # Should fail early if passed a word less than 2 characters long
+    with self.assertRaises(ValueError):
+      puzzle.find_word(grid, 'A')

@@ -30,6 +30,9 @@ def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
   first_letter = word[0]
   length = len(word)
 
+  if length < 2:
+    raise ValueError(f"Search word must be at least two characters long! Got '{word}'")
+
   for x, y in find_all(grid, first_letter):
     # Generate search vectors in all possible directions starting from the first letter, and limit to the word length
     search_vectors = (islice(grid.vector((x, y), h, v), length) for h, v in directions()
