@@ -38,9 +38,6 @@ class PuzzleTest(TestCase):
     *_, last = puzzle.find_all(grid, 'B')
     self.assertEqual(last, (14, 14))
 
-  def test_directions(self):
-    self.assertEqual(set(puzzle.directions()), {(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)})
-
   def test_find_word(self):
     _, grid = self.puzzle
 
