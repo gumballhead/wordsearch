@@ -1,9 +1,9 @@
-import io
+from io import StringIO
 from unittest import TestCase
 
 from wordsearch import puzzle
 
-puzzle_input = io.StringIO('\n'.join([
+puzzle_input = StringIO('\n'.join([
   'BONES,KHAN,KIRK,SCOTTY,SPOCK,SULU,UHURA',
   'U,M,K,H,U,L,K,I,N,V,J,O,C,W,E',
   'L,L,S,H,K,Z,Z,W,Z,C,G,J,U,Y,G',

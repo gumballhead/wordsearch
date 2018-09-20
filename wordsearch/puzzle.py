@@ -34,15 +34,15 @@ def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
     raise ValueError(f"Search word must be at least two characters long! Got '{word}'")
 
   for x, y in find_all(grid, first_letter):
-    # Generate search vectors in all possible directions starting from the first letter, and limit to the word length
-    search_vectors = (islice(grid.vector((x, y), h, v), length) for h, v in directions()
+    # Generate search vectors in all possible directions starting from the first letter
+    search_vectors = (grid.vector((x, y), horizontal, vertical) for horizontal, vertical in directions()
 
       # Filter out search vectors that terminate before the word ends (borders approaching an edge)
-      if (x + h * (length - 1), y + v * (length - 1)) in grid)
+      if (x + horizontal * (length - 1), y + vertical * (length - 1)) in grid)
 
     for search_vector in search_vectors:
-      # Save a reference the points iterator to return as a result if it matches the word
-      points, result = tee(search_vector)
+      # Limit the search vector to the length of the word and save a reference to return if it matches the word
+      points, result = tee(islice(search_vector, length))
 
       # Translate the point vector to the character at each coordinate location
       characters = map(lambda it: grid[it], points)
