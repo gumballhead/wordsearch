@@ -23,10 +23,9 @@ def parse_answer(answer: Dict[str, Any]) -> Tuple[str, Vector]:
   word = answer['w'].replace(' ', '')
   column = answer['c']
   row = answer['r']
-  direction = answer['d']
-  horizonal, vertical = directions[direction]
+  direction = directions[answer['d']]
 
-  return word, islice(vector(horizonal, vertical, (column, row)), len(word))
+  return word, islice(vector((column, row), direction), len(word))
 
 games = urlopen('https://staging.puzzlexperts.com/YouPlay/api/game/6/archive').read()
 

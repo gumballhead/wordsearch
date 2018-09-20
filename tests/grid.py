@@ -2,7 +2,7 @@ from unittest import TestCase
 from array import array
 from itertools import islice
 
-from wordsearch.grid import Coordinates, Grid, vector, terminal, directions
+from wordsearch.grid import Coordinates, Direction, Grid, vector, terminal, directions
 
 class GridTest(TestCase):
   characters = 'ABCDE' + 'FGHIJ' + 'KLMNO' + 'PQRST' + 'UVWXY'
@@ -64,13 +64,13 @@ class GridTest(TestCase):
     self.assertEqual(self.grid.coordinates(16), (1, 3))
     self.assertEqual(self.grid.coordinates(20), (0, 4))
 
-  def check_vector(self, position: Coordinates, horizontal: int, vertical: int):
+  def check_vector(self, position: Coordinates, direction: Direction):
     distance = self.grid.size
-    first, *_, last = islice(vector(horizontal, vertical, position), distance)
+    first, *_, last = islice(vector(position, direction), distance)
 
     self.assertEqual(first, position)
-    self.assertEqual(last, terminal(horizontal, vertical, position, distance))
+    self.assertEqual(last, terminal(position, direction, distance))
 
   def test_vectors(self):
-    for horizontal, vertical in directions():
-      self.check_vector((0, 0), horizontal, vertical)
+    for direction in directions():
+      self.check_vector((0, 0), direction)

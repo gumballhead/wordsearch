@@ -1,5 +1,5 @@
 from array import array
-from itertools import chain, product, islice, tee
+from itertools import chain, islice, tee
 from typing import Tuple, List, Iterator, TextIO
 
 from wordsearch.grid import Coordinates, Vector, Grid, terminal, directions
@@ -9,7 +9,7 @@ def parse_line(line: str) -> List[str]:
   return line.rstrip('\n').split(',')
 
 def read_puzzle(lines: TextIO) -> Tuple[List[str], Grid]:
-  """Reads a puzzle input file into the list of words and the character grid"""
+  """Parses a puzzle input file into the list of words and the character grid"""
   words = parse_line(lines.readline())
   characters = map(ord, chain(*map(parse_line, lines)))
 
@@ -23,15 +23,12 @@ def find_all(grid: Grid, letter: str) -> Iterator[Coordinates]:
 
 def search_vectors(grid: Grid, position: Coordinates, distance: int) -> Iterator[Vector]:
   """Generate all candidate search vectors from a starting position on a grid"""
-  for horizontal, vertical in directions():
-    end_position = terminal(horizontal, vertical, position, distance)
-
+  for direction in directions():
     # Filter out vectors whose length would be too short to match the word (borders approaching an edge)
-    if end_position in grid:
-      vector = grid.vector(position, horizontal, vertical)
+    if terminal(position, direction, distance) in grid:
 
-      # Limit the search distance to the length of the word
-      yield islice(vector, distance)
+      # Create the vector and limit the search distance to the length of the word
+      yield islice(grid.vector(position, direction), distance)
 
 def find_word(grid: Grid, word: str) -> Iterator[Coordinates]:
   """Finds a word by searching in all direction of a grid, returning the location of each letter"""

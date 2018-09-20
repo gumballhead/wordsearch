@@ -2,28 +2,31 @@ from array import array
 from math import sqrt
 from itertools import takewhile, product
 from collections.abc import Mapping
-from typing import Iterator, Tuple, cast
+from typing import Iterator, Tuple
 
 Coordinates = Tuple[int, int]
+Direction = Tuple[int, int]
 Vector = Iterator[Coordinates]
 
-def vector(horizontal: int, vertical: int, start=(0, 0)) -> Vector:
+def vector(start: Coordinates, direction: Direction) -> Vector:
   """Generates points from a starting position in a constant direction"""
   x, y = start
+  horizontal, vertical = direction
 
   while True:
     yield (x, y)
     x += horizontal
     y += vertical
 
-def terminal(horizontal: int, vertical: int, start: Coordinates, distance: int) -> Coordinates:
+def terminal(start: Coordinates, direction: Direction, distance: int) -> Coordinates:
   """Calculate the terminal position of a vector given a starting position and length"""
   x, y = start
-  distance -= 1
+  horizontal, vertical = direction
+  length = distance - 1
 
-  return (x + horizontal * distance, y + vertical * distance)
+  return (x + horizontal * length, y + vertical * length)
 
-def directions() -> Iterator[Tuple[int, int]]:
+def directions() -> Iterator[Direction]:
   """Create an iterator over the product of all horizontal and vertical directions"""
   return filter(lambda it: it != (0, 0), product((-1, 0, 1), (-1, 0, 1)))
 
@@ -42,7 +45,7 @@ class Grid(Mapping):
     length = len(characters)
     size = int(sqrt(length))
 
-    if size * size != length:
+    if size ** 2 != length:
       raise ValueError('Character array length for a Grid must be a perfect square (rows = columns)')
 
     self.characters = characters
@@ -94,9 +97,9 @@ class Grid(Mapping):
 
     return (column, row)
 
-  def vector(self, start: Coordinates, horizontal: int, vertical: int) -> Vector:
+  def vector(self, start: Coordinates, direction: Direction) -> Vector:
     """
     Generate a vector of coordinates from the grid based on a starting position and constant direction.
     The vector terminates at the grid extent and does not wrap.
     """
-    return takewhile(self.__contains__, vector(horizontal, vertical, start))
+    return takewhile(self.__contains__, vector(start, direction))
