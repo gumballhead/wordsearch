@@ -41,4 +41,4 @@ for metadata in json.loads(games):
     output, result = tee(find_word(grid, word))
     print(f"{word}:", ', '.join(map(str, output)))
 
-    assert(list(result) == list(answer))
+    assert list(result) == list(answer), "you are WRONG!!!!!!"
